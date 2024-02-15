@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { Suspense, useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import UserCard from "@/app/_components/user-card";
 import {
@@ -125,29 +125,31 @@ const Main = () => {
               <UserCard key={index} user={user} index={index} />
             ))}
           </div>
-          <Pagination className="my-10 ml-auto">
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  className={cn(
-                    "cursor-pointer",
-                    !userData.previous && "pointer-events-none"
-                  )}
-                  onClick={() => handlePrevious()}
-                />
-              </PaginationItem>
-              <PaginationItem>{searchParams.get("page") || 1}</PaginationItem>
-              <PaginationItem>
-                <PaginationNext
-                  className={cn(
-                    "cursor-pointer",
-                    !userData.next && "pointer-events-none"
-                  )}
-                  onClick={() => handleNext()}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+          <Suspense fallback="Loading...">
+            <Pagination className="my-10 ml-auto">
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    className={cn(
+                      "cursor-pointer",
+                      !userData.previous && "pointer-events-none"
+                    )}
+                    onClick={() => handlePrevious()}
+                  />
+                </PaginationItem>
+                <PaginationItem>{searchParams.get("page") || 1}</PaginationItem>
+                <PaginationItem>
+                  <PaginationNext
+                    className={cn(
+                      "cursor-pointer",
+                      !userData.next && "pointer-events-none"
+                    )}
+                    onClick={() => handleNext()}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </Suspense>
         </>
       )}
       {isLoading && (
